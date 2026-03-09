@@ -3,56 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dentalmovilr4 | Crypto Radar</title>
+    <title>Dentalmovilr4 | Hub Cripto & DePIN</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-900 text-white font-sans">
 
-    <header class="p-6 border-b border-gray-800 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-yellow-500">DENTALMOVILR4</h1>
-        <div id="status" class="text-xs bg-green-900 text-green-400 px-3 py-1 rounded-full">Sistema Activo</div>
+    <header class="p-6 border-b border-gray-800 flex justify-between items-center bg-black">
+        <h1 class="text-2xl font-black text-yellow-500 tracking-tighter">DENTALMOVILR4</h1>
+        <div class="text-xs bg-green-900 text-green-400 px-3 py-1 rounded-full animate-pulse font-mono">NODO ACTIVO</div>
     </header>
 
-    <main class="p-4 space-y-6">
-        <section class="grid grid-cols-2 gap-4">
-            <div class="bg-gray-800 p-4 rounded-xl shadow-lg border-l-4 border-yellow-500">
-                <p class="text-gray-400 text-sm">Bitcoin (BTC)</p>
-                <h2 id="btc-price" class="text-xl font-mono">Cargando...</h2>
+    <main class="p-4 space-y-6 max-w-lg mx-auto">
+        
+        <section class="bg-gradient-to-br from-green-800 to-gray-900 p-6 rounded-2xl shadow-2xl border border-green-500/30">
+            <div class="flex items-center mb-4">
+                <div class="bg-green-500 p-2 rounded-lg mr-3">
+                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold">Minería DePIN (3x)</h3>
             </div>
-            <div class="bg-gray-800 p-4 rounded-xl shadow-lg border-l-4 border-blue-500">
-                <p class="text-gray-400 text-sm">Ethereum (ETH)</p>
-                <h2 id="eth-price" class="text-xl font-mono">Cargando...</h2>
+            <p class="text-gray-300 text-sm mb-6">Únete a mi red y gana cripto usando solo tu internet sobrante. Sin gastar batería.</p>
+            
+            <a href="https://app.grass.io/register/?referralCode=hT-gXzZxbuOvn37" 
+               target="_blank" 
+               class="block w-full text-center bg-green-500 hover:bg-green-400 text-black font-extrabold py-3 px-4 rounded-xl transition duration-300 transform hover:scale-105 shadow-lg">
+               ¡EMPEZAR A MINAR GRATIS!
+            </a>
+        </section>
+
+        <section class="bg-gray-800 p-6 rounded-2xl border border-gray-700">
+            <h3 class="text-gray-400 uppercase text-xs font-bold tracking-widest mb-4">Estatus del Mercado</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-gray-500">BTC/USDT</p>
+                    <p id="btc" class="text-lg font-mono text-yellow-500 font-bold">Cargando...</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">ETH/USDT</p>
+                    <p id="eth" class="text-lg font-mono text-blue-400 font-bold">Cargando...</p>
+                </div>
             </div>
         </section>
 
-        <section class="bg-gray-800 p-6 rounded-xl shadow-lg">
-            <h3 class="text-lg font-semibold mb-4 text-gray-300">Resumen de Cuenta (Binance)</h3>
-            <div class="flex justify-between items-center">
-                <span class="text-gray-400">Balance Estimado:</span>
-                <span id="balance" class="text-2xl text-green-400 font-bold">$0.00</span>
-            </div>
-            <p class="text-[10px] text-gray-500 mt-4 italic">* Los datos se sincronizan vía API de solo lectura.</p>
-        </section>
     </main>
 
     <script>
-        // Función para obtener precios reales sin gastar batería
-        async function fetchPrices() {
+        async function updateMarket() {
             try {
-                const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbols=["BTCUSDT","ETHUSDT"]');
-                const data = await response.json();
-                
-                document.getElementById('btc-price').innerText = `$${parseFloat(data[0].price).toLocaleString()}`;
-                document.getElementById('eth-price').innerText = `$${parseFloat(data[1].price).toLocaleString()}`;
-            } catch (error) {
-                console.error("Error al conectar con Binance", error);
-            }
+                const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbols=["BTCUSDT","ETHUSDT"]');
+                const data = await res.json();
+                document.getElementById('btc').innerText = `$${Math.round(data[0].price).toLocaleString()}`;
+                document.getElementById('eth').innerText = `$${Math.round(data[1].price).toLocaleString()}`;
+            } catch (e) { console.log("Reconectando..."); }
         }
-
-        // Ejecutar al cargar
-        setInterval(fetchPrices, 30000); // Actualiza cada 30 segundos para ahorrar datos
-        fetchPrices();
+        setInterval(updateMarket, 15000);
+        updateMarket();
     </script>
 </body>
 </html>
+
